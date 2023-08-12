@@ -77,14 +77,17 @@ def get_translation_from_text(dest: str, text: str, cost: float = 0) -> str:
         cost += config.GPT35_INPUT_PRICING * tokens_for_chunk / 1000
         sum_tokens += tokens_for_chunk
         attempt = 0
-        while attempt < 3:
+        while attempt < config.max_attemp:
             try:
                 answer = chat(message)
                 break
             except Exception as e:
                 print(e)
-                attempt += 1
                 time.sleep(20)
+                attempt += 1
+                if attempt == config.max_attemp:
+                    raise Exception(f"Can not send reuest to OpenAI")
+                
                 continue
         answer_tokens = count_string_tokens(answer)
         sum_tokens += answer_tokens
