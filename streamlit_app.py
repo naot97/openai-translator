@@ -9,7 +9,7 @@ def main():
 
     dest = st.selectbox(
         "Destination language",
-        ("VietNamese", "English", "French")
+        ("Vietnamese", "English", "French", "Japanese", "Korean")
     )
     is_click = st.button(label=":red[Submit]")
     # Display the answer and additional context

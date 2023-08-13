@@ -49,19 +49,21 @@ def count_string_tokens(string: str, model: str = 'gpt-3.5-turbo') -> int:
 
 def get_translation_from_list(dest: str, text_lst: [str], cost: float = 0) -> str:
     text_lst = [text.replace('\n','') for text in text_lst]
+    text_lst = [text.replace('|','') for text in text_lst]
     merge_text = ''
     answers = []
     total_cost = 0
     for i, text in enumerate(text_lst):
-        if  count_message_tokens(f'{merge_text}\n{text}') < config.LIMIT_TOKEN_NUMBER :
-            merge_text = f'{merge_text}\n{text}' if len(merge_text) > 0 else text
+        print(text)
+        if  count_message_tokens(f'{merge_text}||{text}') < config.LIMIT_TOKEN_NUMBER :
+            merge_text = f'{merge_text}||{text}' if len(merge_text) > 0 else text
             hit_limit = False
         else:
             hit_limit = True
 
         if  i == len(text_lst) - 1 or hit_limit:
             answer, cost = get_translation_from_text(dest, merge_text)
-            answers = answers + answer.split('\n') 
+            answers = answers + answer.split('||') 
             total_cost += cost
             merge_text = text
 
@@ -85,8 +87,8 @@ def get_translation_from_text(dest: str, text: str, cost: float = 0) -> str:
                 print(e)
                 time.sleep(20)
                 attempt += 1
-                if attempt == config.max_attemp:
-                    raise Exception(f"Can not send reuest to OpenAI")
+                if attempt >= config.max_attemp:
+                    raise Exception(f"Can not send request to OpenAI")
                 
                 continue
         answer_tokens = count_string_tokens(answer)

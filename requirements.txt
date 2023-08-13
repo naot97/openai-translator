@@ -3,4 +3,5 @@ tiktoken
 iso639-lang
 flask
 argparse
+evaluate
 
