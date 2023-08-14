@@ -63,7 +63,7 @@ def get_translation_from_list(dest: str, text_lst: [str], cost: float = 0) -> st
 
         if  i == len(text_lst) - 1 or hit_limit:
             answer, cost = get_translation_from_text(dest, merge_text)
-            answers = answers + map(lambda x: x.strip(), answer.split('||')) 
+            answers = answers + list(map(lambda x: x.strip(), answer.split('||')))
             total_cost += cost
             merge_text = text
 
