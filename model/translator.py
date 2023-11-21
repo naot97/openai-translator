@@ -5,7 +5,7 @@ import os
 import time
 from config import common as config
 
-openai.api_key = os.environ.get("OPENAI_KEY","")
+openai.api_key = os.environ.get("OPENAI_API_KEY","")
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 def _get_chat_completion(message, model="gpt-3.5-turbo", n=1, stop=None, temperature=1):
     response = openai.ChatCompletion.create(
